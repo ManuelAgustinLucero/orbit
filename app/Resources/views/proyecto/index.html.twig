@@ -1,0 +1,138 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="header">
+                            <h4 class="title">Lista de Proyectos</h4>
+
+                            <br>
+                            {#<p class="category">Here is a subtitle for this table</p>#}
+                        </div>
+                        <div class="content table-responsive table-full-width">
+                            <table id="pago" class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Cliente</th>
+                                    <th>Titulo</th>
+                                    <th>Descripcion</th>
+                                    <th>Entregado</th>
+                                    <th>Total</th>
+                                    <th>Fecha</th>
+                                    <th>Estado</th>
+                                    <th>Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for proyecto in proyectos %}
+                                    <tr>
+                                        <td><a href="{{ path('admin_proyecto_show', { 'id': proyecto.id }) }}">{{ proyecto.id }}</a></td>
+                                        <td><a href="{{ path('admin_cliente_show', { 'id': proyecto.cliente.id }) }}">{{ proyecto.cliente }}</a> </td>
+                                        <td>{{ proyecto.titulo }}</td>
+                                        <td>{{ proyecto.descripcion }}</td>
+                                        <td>${{ proyecto.entregado }}</td>
+                                        <td>${{ proyecto.total }}</td>
+                                        <td>{% if proyecto.fecha %}{{ proyecto.fecha|date('Y-m-d H:i:s') }}{% endif %}</td>
+                                        <td>{% if proyecto.estado %} <span class="text-success"> Pagado</span>{% else %} <span class="text-danger">Deudor</span> {% endif %}</td>
+                                        <td>
+
+                                                    <a href="{{ path('admin_proyecto_show', { 'id': proyecto.id }) }}">Detalle</a>
+                                            <br>
+                                                    <a href="{{ path('admin_proyecto_edit', { 'id': proyecto.id }) }}">Editar</a>
+
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            <div class="row">
+                                <div class="col-md-6 col-md-offset-5">
+                                    <a class="btn btn-info btn-fill btn-wd" href="{{ path('admin_proyecto_new') }}">Crear nuevo Proyecto</a>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        var table = $('#pago').DataTable({
+            "language": {
+                "sProcessing":    "Procesando...",
+                "sLengthMenu":    "Mostrar _MENU_ registros",
+                "sZeroRecords":   "No se encontraron resultados",
+                "sEmptyTable":    "Ningún dato disponible en esta tabla",
+                "sInfo":          "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty":     "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered":  "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix":   "",
+                "sSearch":        "Buscar:",
+                "sUrl":           "",
+                "sInfoThousands":  ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst":    "Primero",
+                    "sLast":    "Último",
+                    "sNext":    "Siguiente",
+                    "sPrevious": "Anterior",
+
+                },
+                "oAria": {
+                    "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                },
+
+
+
+            },
+
+            dom: 'B <"clear"> lfrtip',
+            order: [[ 1, "desc" ]],
+
+            buttons: [
+                {
+                    extend: 'csvHtml5',
+                    exportOptions: {
+                        columns: [   0,1,2,3,4,5,6,7]
+                    }
+                },
+                {
+                    extend: 'excelHtml5',
+                    exportOptions: {
+                        columns: [   0,1,2,3,4,5,6,7]
+                    }
+                },
+                {
+                    extend: 'pdfHtml5',
+                    exportOptions: {
+                        columns: [   0,1,2,3,4,5,6,7]
+
+                    },
+                    pageSize: 'LEGAL'
+
+                },
+                {
+                    extend: 'print',
+                    exportOptions: {
+                        columns: [   0,1,2,3,4,5,6,7]
+                    }
+                }
+
+            ]
+        });
+    </script>
+{% endblock %}

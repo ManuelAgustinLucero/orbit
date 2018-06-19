@@ -1,0 +1,80 @@
+
+<div class="sidebar" data-background-color="white" data-active-color="danger">
+
+    <div class="sidebar-wrapper ">
+        <div class="logo">
+            <a class="simple-text text-success">
+                <img src="{{ asset("assets/img/logo-orbit.png") }}" alt="">
+
+            </a>
+
+        </div>
+
+        <div class="box">
+            <ul class="nav text-center">
+                {% if is_granted('ROLE_ADMIN') %}
+                    <li  class="">
+                        <a href="{{ path('homepage')}}">
+                            <p>Home</p>
+                        </a>
+                    </li>
+                    <hr>
+                <li >
+                    <a href="{{ path('admin_pago_index')}}">
+                        <p>Pagos</p>
+                    </a>
+                </li>
+                <li >
+                    <a href="{{ path('admin_pago_new')}}">
+                        <p>Nuevo Pago</p>
+                    </a>
+                </li>
+                <hr>
+
+                <li >
+                    <a href="{{ path('admin_proyecto_index')}}">
+                        <p>Proyecto</p>
+                    </a>
+                </li>
+                <li >
+                    <a href="{{ path('admin_proyecto_new')}}">
+                        <p>Nuevo proyecto</p>
+                    </a>
+                </li>
+                    {#<li >#}
+                        {#<a href="{{ path('admin_cliente_new')}}">#}
+                            {#<i class="ti-pin2"></i>#}
+                            {#<p>Crear Cliente</p>#}
+                        {#</a>#}
+                    {#</li>#}
+                    <hr>
+
+                <li >
+                    <a href="{{ path('admin_cliente_index')}}">
+                        <p>Cliente</p>
+                    </a>
+                </li>
+                <li >
+                    <a href="{{ path('admin_cliente_new')}}">
+                        <p>Crear Cliente</p>
+                    </a>
+                </li>
+
+                    <hr>
+                    <li class=" col-md-6 col-lg-offset-3">
+                        <a class="text-danger btn btn-link btn-danger " href="{{ path('fos_user_security_logout') }}">
+                            {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+
+
+                        </a>
+                    </li>
+
+
+                {% endif %}
+
+            </ul>
+        </div>
+
+    </div>
+</div>
+
