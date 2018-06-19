@@ -42,6 +42,7 @@ class PagoController extends Controller
         $pago = new Pago();
         $form = $this->createForm('AppBundle\Form\PagoType', $pago);
         $form->handleRequest($request);
+
         $em = $this->getDoctrine()->getManager();
 
         $clientes= $em->getRepository('AppBundle:Cliente')->findAll();
@@ -51,14 +52,16 @@ class PagoController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($pago);
             $em->flush();
-
-            $proyecto = $em->getRepository('AppBundle:Proyecto')->find($pago->getProyecto()->getId());
-            $proyecto->setEntregado($proyecto->getEntregado()+$pago->getMonto());
-            if (($proyecto->getEntregado()) >= $proyecto->getTotal()){
-                $proyecto->setEstado(true);
+            if ($pago->getTipoPago()->getId()==3){
+                $proyecto = $em->getRepository('AppBundle:Proyecto')->find($pago->getProyecto()->getId());
+                $proyecto->setEntregado($proyecto->getEntregado()+$pago->getIngreso());
+                if (($proyecto->getEntregado()) >= $proyecto->getTotal()){
+                    $proyecto->setEstado(true);
+                }
+                $em->persist($proyecto);
+                $em->flush();
             }
-            $em->persist($proyecto);
-            $em->flush();
+
 
             return $this->redirectToRoute('admin_pago_show', array('id' => $pago->getId()));
         }

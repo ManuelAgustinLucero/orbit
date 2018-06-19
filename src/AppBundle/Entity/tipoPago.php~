@@ -72,5 +72,41 @@ class tipoPago
     {
         $this->pago = new ArrayCollection();
     }
-}
 
+    /**
+     * Add pago
+     *
+     * @param \AppBundle\Entity\Pago $pago
+     *
+     * @return tipoPago
+     */
+    public function addPago(\AppBundle\Entity\Pago $pago)
+    {
+        $this->pago[] = $pago;
+
+        return $this;
+    }
+
+    /**
+     * Remove pago
+     *
+     * @param \AppBundle\Entity\Pago $pago
+     */
+    public function removePago(\AppBundle\Entity\Pago $pago)
+    {
+        $this->pago->removeElement($pago);
+    }
+
+    /**
+     * Get pago
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPago()
+    {
+        return $this->pago;
+    }
+    public function __toString(){
+        return (string) $this->tipo;
+    }
+}

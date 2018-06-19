@@ -19,18 +19,29 @@
                                 <tr >
                                     <th class="text-center">Id</th>
                                     <th class="text-center">Proyecto</th>
-                                    <th class="text-center">Monto</th>
+                                    <th class="text-center">Descripcion</th>
+                                    <th class="text-center">Ingreso</th>
+                                    <th class="text-center">Egreso</th>
+                                    <th class="text-center">Extraccion</th>
                                     <th class="text-center">Fecha</th>
                                     <th class="text-center">Actions</th>
                                 </tr>
                                 </thead>
                                 <tbody>
+                                {% set ingresos=0 %}
+                                {% set egresos=0 %}
+                                {% set extraccion=0 %}
+
                                 {% for pago in pagos %}
                                     <tr class="text-center">
                                         <td><a href="{{ path('admin_pago_show', { 'id': pago.id }) }}">{{ pago.id }}</a></td>
-                                        <td>{{ pago.proyecto }}</td>
+                                        <td>{% if pago.proyecto!= null %}{{ pago.proyecto }} {% else %} -{% endif %}</td>
+                                        <td>{{ pago.tipoPago }}</td>
 
-                                        <td>${{ pago.monto }}</td>
+                                        <td>{% if pago.ingreso!= null %}${{ pago.ingreso }} {% else %} -{% endif %}</td>
+                                        <td>{% if pago.egreso!= null %}${{ pago.egreso }} {% else %} -{% endif %}</td>
+                                        <td> {% if pago.extraccion!= null %}${{ pago.extraccion }} {% else %} -{% endif %}</td>
+
                                         <td>{% if pago.fecha %}{{ pago.fecha|date('d-m-Y ') }}{% endif %}</td>
                                         <td>
 
@@ -39,8 +50,23 @@
                                                     <a href="{{ path('admin_pago_edit', { 'id': pago.id }) }}">Editar</a>
 
                                         </td>
+                                        {% set ingresos= ingresos + pago.ingreso %}
+                                        {% set egresos= egresos + pago.egreso %}
+                                        {% set extraccion= extraccion + pago.extraccion %}
+
                                     </tr>
                                 {% endfor %}
+
+                                <tr>
+                                    <td class="text-center bg-success"></td>
+                                    <td class="text-center bg-success"></td>
+                                    <td class="text-center bg-success">Total:</td>
+                                    <td class="text-center bg-success">${{ ingresos }}</td>
+                                    <td class="text-center bg-success">${{ egresos }}</td>
+                                    <td class="text-center bg-success">${{ extraccion }}</td>
+                                    <td class="text-center bg-success"></td>
+                                    <td class="text-center bg-success"></td>
+                                </tr>
                                 </tbody>
                             </table>
                             <div class="row">
@@ -100,19 +126,19 @@
                 {
                     extend: 'csvHtml5',
                     exportOptions: {
-                        columns: [   0,1,2]
+                        columns: [   0,1,2,3,4,5,6]
                     }
                 },
                 {
                     extend: 'excelHtml5',
                     exportOptions: {
-                        columns: [   0,1,2]
+                        columns: [   0,1,2,3,4,5,6]
                     }
                 },
                 {
                     extend: 'pdfHtml5',
                     exportOptions: {
-                        columns: [   0,1,2]
+                        columns: [   0,1,2,3,4,5,6]
 
                     },
                     pageSize: 'LEGAL'
@@ -121,7 +147,7 @@
                 {
                     extend: 'print',
                     exportOptions: {
-                        columns: [   0,1,2]
+                        columns: [   0,1,2,3,4,5,6]
                     }
                 }
 

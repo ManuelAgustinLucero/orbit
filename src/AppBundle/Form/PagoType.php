@@ -5,7 +5,6 @@ namespace AppBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
 class PagoType extends AbstractType
 {
@@ -14,12 +13,10 @@ class PagoType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('monto')->add('fecha',\Symfony\Component\Form\Extension\Core\Type\DateType::class, array(
+        $builder->add('ingreso')->add('egreso')->add('extraccion')->add('fecha',\Symfony\Component\Form\Extension\Core\Type\DateType::class, array(
             'widget' => 'single_text',
-            'format' => 'yyyy-MM-dd'))->add('proyecto');
-
-    }
-    /**
+            'format' => 'yyyy-MM-dd'))->add('proyecto')->add('tipoPago');
+    }/**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)

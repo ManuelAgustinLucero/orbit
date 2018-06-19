@@ -16,7 +16,16 @@
                             </div>
                             {{ form_start(form) }}
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-6 col-lg-offset-3" >
+                                    <div class="form-group" onchange="SelectTipo()">
+                                        <label class="text-center">Tipo </label>
+                                        {{ form_widget(form.tipoPago, { 'attr': {'class':'form-control border-input'}})}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+
+                                <div class="col-md-6 " id="clienteHiden">
                                     <label for="">Clientes</label>
                                     <select onchange="SelectCliente()"  class="form-control border-input" name="" id="cliente">
                                         <option></option>
@@ -26,7 +35,7 @@
                                     </select>
                                 </div>
 
-                                <div class="col-md-6" >
+                                <div class="col-md-6" id="proyectosHiden">
                                     <div class="form-group">
                                         <label class="text-center">Proyectos</label>
                                         {{ form_widget(form.proyecto, { 'attr': {'class':'form-control border-input'}})}}
@@ -35,13 +44,34 @@
 
                             </div>
                             <div class="row">
-                                <div class="col-md-6" >
+                                <div class="col-md-6 col-lg-offset-3" id="ingreso" >
                                     <div class="form-group" >
-                                        <label class="text-center">Monto</label>
-                                        {{ form_widget(form.monto, { 'attr': {'class':'form-control border-input'}})}}
+                                        <label class="text-center">Ingreso</label>
+                                        {{ form_widget(form.ingreso, { 'attr': {'class':'form-control border-input'}})}}
                                     </div>
                                 </div>
-                                <div class="col-md-3  ">
+
+
+
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 col-lg-offset-3" id="egreso">
+                                    <div class="form-group" >
+                                        <label class="text-center">Egreso</label>
+                                        {{ form_widget(form.egreso, { 'attr': {'class':'form-control border-input'}})}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 col-lg-offset-3" id="extraccion">
+                                    <div class="form-group" >
+                                        <label class="text-center">Extraccion</label>
+                                        {{ form_widget(form.extraccion, { 'attr': {'class':'form-control border-input'}})}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" >
+                                <div class="col-md-3  col-lg-offset-4" id="fecha">
                                     <div class="form-group">
                                         <label class="text-center">fecha</label>
                                         {{ form_widget( form.fecha , { 'attr': {'class':'form-control border-input'}})}}
@@ -71,9 +101,42 @@
     <script type="text/javascript">
         $(document).ready(function() { $("#idCliente").select2(); });
         $("#appbundle_pago_proyecto").empty();
+        $("#ingreso").hide();
+        $("#egreso").hide();
+        $("#extraccion").hide();
+        $("#clienteHiden").hide();
+        $("#proyectosHiden").hide();
+        $("#fecha").hide();
 
     </script>
     <script>
+        function SelectTipo() {
+            $("#fecha").show();
+
+            var tipo=$("#appbundle_pago_tipoPago").val();
+                if (tipo ==1) {
+                    $("#ingreso").hide();
+                    $("#egreso").show();
+                    $("#extraccion").hide();
+                    $("#clienteHiden").hide();
+                    $("#proyectosHiden").hide();
+                }
+                else if(tipo ==2){
+                    $("#ingreso").hide();
+                    $("#egreso").hide();
+                    $("#extraccion").show();
+                    $("#clienteHiden").hide();
+                    $("#proyectosHiden").hide();
+                }
+                else{
+                    $("#ingreso").show();
+                    $("#egreso").hide();
+                    $("#extraccion").hide();
+                    $("#clienteHiden").show();
+                    $("#proyectosHiden").show();
+                }
+
+        }
         function  SelectCliente(){
             console.log($("#cliente").val());
             $(document).ready(function () {
@@ -82,7 +145,6 @@
                     url: "{{ path ("admin_proyectoCliente") }}",
                     data: {id:$("#cliente").val()}
                 }).done(function (data) {
-                    console.log(data);
                     $("#appbundle_pago_proyecto").empty();
                     $.each(data,function(key, value)
                     {

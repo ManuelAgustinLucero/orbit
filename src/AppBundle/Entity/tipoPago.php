@@ -106,4 +106,7 @@ class tipoPago
     {
         return $this->pago;
     }
+    public function __toString(){
+        return (string) $this->tipo;
+    }
 }
