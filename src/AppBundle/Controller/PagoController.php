@@ -42,6 +42,10 @@ class PagoController extends Controller
         $pago = new Pago();
         $form = $this->createForm('AppBundle\Form\PagoType', $pago);
         $form->handleRequest($request);
+        $em = $this->getDoctrine()->getManager();
+
+        $clientes= $em->getRepository('AppBundle:Cliente')->findAll();
+
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -62,6 +66,7 @@ class PagoController extends Controller
         return $this->render('pago/new.html.twig', array(
             'pago' => $pago,
             'form' => $form->createView(),
+            'clientes'=>$clientes
         ));
     }
 

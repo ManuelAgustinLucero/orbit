@@ -11,22 +11,36 @@
                             <h4 class="title text-center">Crear Pago</h4>
                         </div>
                         <div class="content">
+                            <div class="row">
+
+                            </div>
                             {{ form_start(form) }}
                             <div class="row">
+                                <div class="col-md-6">
+                                    <label for="">Clientes</label>
+                                    <select onchange="SelectCliente()"  class="form-control border-input" name="" id="cliente">
+                                        <option></option>
+                                        {% for cliente in clientes %}
+                                            <option value="{{ cliente.id }}">{{ cliente.nombre }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
                                 <div class="col-md-6" >
                                     <div class="form-group">
-                                        <label class="text-center">Cliente</label>
+                                        <label class="text-center">Proyectos</label>
                                         {{ form_widget(form.proyecto, { 'attr': {'class':'form-control border-input'}})}}
                                     </div>
                                 </div>
+
+                            </div>
+                            <div class="row">
                                 <div class="col-md-6" >
                                     <div class="form-group" >
                                         <label class="text-center">Monto</label>
                                         {{ form_widget(form.monto, { 'attr': {'class':'form-control border-input'}})}}
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
                                 <div class="col-md-3  ">
                                     <div class="form-group">
                                         <label class="text-center">fecha</label>
@@ -56,5 +70,29 @@
     {{ parent() }}
     <script type="text/javascript">
         $(document).ready(function() { $("#idCliente").select2(); });
+        $("#appbundle_pago_proyecto").empty();
+
     </script>
+    <script>
+        function  SelectCliente(){
+            console.log($("#cliente").val());
+            $(document).ready(function () {
+                $.ajax({
+                    type: "POST",
+                    url: "{{ path ("admin_proyectoCliente") }}",
+                    data: {id:$("#cliente").val()}
+                }).done(function (data) {
+                    console.log(data);
+                    $("#appbundle_pago_proyecto").empty();
+                    $.each(data,function(key, value)
+                    {
+                        $("#appbundle_pago_proyecto").append('<option value=' + value.id + '>' + value.titulo + '</option>');
+                    });
+                });
+
+            })
+        }
+
+    </script>
+
 {% endblock %}

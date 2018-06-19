@@ -5,7 +5,9 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Proyecto;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Proyecto controller.
@@ -132,5 +134,35 @@ class ProyectoController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+
+    /**
+     * Finds and displays a proyecto entity.
+     *
+     * @Route("/proyecto_cliente", name="admin_proyectoCliente")
+     * @Method({"GET", "POST"})
+     */
+    public function proyectoClienteAction(Request $request)
+    {
+        $id= $request->request->get('id');
+        //$proyectos = $em->getRepository('AppBundle:Proyecto')->findAll();
+        $em = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository("AppBundle:Proyecto");
+        $query = $repository->createQueryBuilder('p')
+            ->select(array(
+                    'p.id',
+                    'p.titulo',
+
+                )
+            )
+            ->where('p.cliente = :id')
+            ->setParameter('id', $id)
+            ->setMaxResults(10000)
+        ;
+        $proyectos=$query->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+
+
+        return new JsonResponse($proyectos);
+
     }
 }

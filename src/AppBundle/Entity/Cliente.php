@@ -29,12 +29,6 @@ class Cliente
      */
     private $nombre;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="apellido", type="string", length=255, nullable=true)
-     */
-    private $apellido;
 
     /**
      * @var string
@@ -57,26 +51,7 @@ class Cliente
      */
     private $direccion;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="ciudad", type="string", length=255, nullable=true)
-     */
-    private $ciudad;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="provincia", type="string", length=255, nullable=true)
-     */
-    private $provincia;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="pais", type="string", length=255, nullable=true)
-     */
-    private $pais;
 
     /**
      * @var \DateTime
@@ -344,6 +319,7 @@ class Cliente
         return $this;
     }
 
+
     /**
      * Get fecha
      *
@@ -353,7 +329,10 @@ class Cliente
     {
         return $this->fecha;
     }
+
     public function __toString(){
         return (string) $this->nombre;
     }
+
+
 }

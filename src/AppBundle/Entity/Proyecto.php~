@@ -291,4 +291,7 @@ class Proyecto
     {
         return $this->pago;
     }
+    public function __toString(){
+        return (string) $this->titulo;
+    }
 }
